@@ -1,0 +1,975 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task</title>
+
+  <style>
+    /* CSS styles */
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap");
+
+:root {
+  --card-width: 200px;
+  --card-height: 300px;
+  --card-transition-duration: 800ms;
+  --card-transition-easing: ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+overflow-x: hidden;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*background: rgba(0, 0, 0, 0.787);*/
+background: rgba(0, 0, 0, 0);
+}
+
+
+
+header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: transparent;
+      padding: 0px 20px;
+    }
+
+    nav {
+        
+    color: white;
+    display: flex;
+    font-size: 16px;
+    margin-right: 20px;
+    margin: -22px;
+    justify-content: space-between;
+    margin-left: 30px;
+    align-items: center;
+    }
+
+    nav img {
+    margin-bottom: 620px;
+    height: 40px;
+    margin-right: 170px;
+    margin-left: -6px;
+    }
+
+    nav a {
+      font-size: 18px;
+    display: inline-block;
+    float: right;
+    position: relative;
+    top: -315px;
+    padding: 9px;
+    color: #eee;
+    text-decoration: none;
+    text-align: center;
+    margin: 10px;
+    margin-left: -209px;
+    transition: border 0.5s ease-in-out;
+    }
+
+    nav a.active {
+      font-weight: bold;
+    }
+    nav a:hover {
+      border: 2px solid white;
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    .links {
+    display: flex;
+    flex-direction: row-reverse;
+    float: right;
+    padding: 453px;
+    margin-left: 7px;
+    }
+
+
+
+
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+button:focus {
+  outline: none;
+  border: none;
+}
+
+.app__bg__image {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateX(var(--image-translate-offset, 0));
+  width: 100%;
+  height: 100%;
+  transition: transform 1000ms ease, opacity 1000ms ease;
+  overflow: hidden;
+}
+
+.app {
+ top: 252px;
+    position: absolute;
+    margin-left: 5px;
+    width: 114%;
+    height: 113%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*!!!*/
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px; 
+  height: 30px; 
+  background: rgba(255, 255, 255, 0.5); 
+  border-radius: 50%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.arrow i {
+  color: #000;
+  font-size: 20px; 
+}
+
+.arrow--left {
+      left: -146px;
+}
+
+.arrow--right {
+  right: -942px;
+}
+
+
+/*!!!*/
+.app__bg {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -5;
+  filter: blur(2px);
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite, darkened 1s ease;
+top: 0;
+left: 0;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes darkened {
+  0% {
+    opacity: 0.8; 
+  }
+  100% {
+    opacity: 0.8; 
+  }
+}
+
+/*.app__bg::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 1;
+  opacity: 0.8;
+}
+
+
+.app__bg::after {
+  content: "";
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  width: 100%;
+  height: calc(100% - 126px); 
+  background: #000;
+  z-index: 1;
+  opacity: 0.8;
+}
+*/
+
+
+
+
+.cardList {
+  position: absolute;
+  width: calc(3 * var(--card-width));
+  height: auto;
+}
+
+.cardList__btn {
+  --btn-size: 35px;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+
+.cardList__btn.btn--left {
+  left: -5%;
+}
+
+.cardList__btn.btn--right {
+  right: -5%;
+}
+
+.cardList__btn .icon {
+  width: 100%;
+  height: 100%;
+}
+
+.cardList__btn .icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cards__wrapper {
+  top: -706px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
+}
+
+.card {
+  --card-translateY-offset: 100vh;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateX(var(--card-translateX-offset)) translateY(var(--card-translateY-offset)) rotateY(var(--card-rotation-offset)) scale(var(--card-scale-offset));
+  display: inline-block;
+  width: var(--card-width);
+  height: var(--card-height);
+  transition: transform var(--card-transition-duration) var(--card-transition-easing);
+  user-select: none;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 1;
+  transition: opacity var(--card-transition-duration) var(--card-transition-easing);
+  opacity: calc(1 - var(--opacity));
+}
+
+.card__image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.card__image img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card.current--card {
+  --current-card-rotation-offset: 0;
+  --card-translateX-offset: 0;
+  --card-rotation-offset: var(--current-card-rotation-offset);
+  --card-scale-offset: 1.2;
+  --opacity: 0.8;
+}
+
+.card.previous--card {
+  --card-translateX-offset: calc(-1 * var(--card-width) * 1.1);
+  --card-rotation-offset: 25deg;
+}
+
+.card.next--card {
+  --card-translateX-offset: calc(var(--card-width) * 1.1);
+  --card-rotation-offset: -25deg;
+}
+
+.card.previous--card,
+.card.next--card {
+  --card-scale-offset: 0.9;
+  --opacity: 0.4;
+}
+
+.infoList {
+  position: absolute;
+  width: calc(3 * var(--card-width));
+  height: var(--card-height);
+  pointer-events: none;
+}
+
+.infoList__wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.info {
+  margin-bottom: calc(var(--card-height) / 8);
+  margin-left: calc(var(--card-width) / 1.5);
+  transform: translateZ(2rem);
+  transition: transform var(--card-transition-duration) var(--card-transition-easing);
+}
+
+.info .text {
+  position: relative;
+  font-family: "Montserrat";
+  font-size: calc(var(--card-width) * var(--text-size-offset, 0.2));
+  white-space: nowrap;
+  color: #fff;
+  width: fit-content;
+}
+
+.info .name,
+.info .location {
+  text-transform: uppercase;
+}
+
+.info .location {
+  font-weight: 800;
+}
+
+.info .location {
+  --mg-left: 40px;
+  --text-size-offset: 0.12;
+  font-weight: 600;
+  margin-left: var(--mg-left);
+  margin-bottom: calc(var(--mg-left) / 2);
+  padding-bottom: 0.8rem;
+}
+
+.info .location::before,
+.info .location::after {
+  content: "";
+  position: absolute;
+  background: #fff;
+  left: 0%;
+  transform: translate(calc(-1 * var(--mg-left)), -50%);
+}
+
+.info .location::before {
+  top: 50%;
+  width: 20px;
+  height: 5px;
+}
+
+.info .location::after {
+  bottom: 0;
+  width: 60px;
+  height: 2px;
+}
+
+.info .description {
+  --text-size-offset: 0.065;
+  font-weight: 500;
+}
+
+.info.current--info {
+  opacity: 1;
+  display: block;
+}
+
+.info.previous--info,
+.info.next--info {
+  opacity: 0;
+  display: none;
+}
+
+
+@media only screen and (max-width: 1200px) {
+  .section {
+    display: none !important;
+  }
+.all{
+    position: relative;
+    top: -78px;
+transform: scale(0.78);
+justify-items: center !important;
+}
+.sessions{
+margin-left: -190px !important;
+    transform: scale(0.9);justify-items: center !important;
+    top: -78px;
+}
+
+}
+
+
+    
+
+@media only screen and (min-width: 800px) {
+  :root {
+    --card-width: 250px;
+    --card-height: 400px;
+  }
+}
+
+.support {
+ position: absolute;
+    right: 10px;
+    bottom: -1097px;
+    padding: 10px;
+    display: flex;
+}
+
+.support a {
+  margin: 0 10px;
+  color: #fff;
+  font-size: 1.8rem;
+  backface-visibility: hidden;
+  transition: all 150ms ease;
+}
+
+.support a:hover {
+  transform: scale(1.1);
+}
+	  
+
+.sessions{
+    position: relative;
+    display: inline-block;
+    color: white;
+    margin-top: 1492px;
+    text-align: center;
+    margin-left: -271px;
+    margin-right: 711px;
+    z-index: auto;
+    justify-items: center;
+}	
+
+
+
+.app2{
+justify-items: center;
+    display: flex;
+    position: absolute;
+    margin-bottom: -2100px;
+    width: 114%;
+    height: 113%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+
+.all h2{
+/*background: #b621fe;*/
+border: none;
+z-index: 1;
+user-select: none;
+    padding: 5px;
+    background: #c3a7d163;
+position: relative;
+  display: inline-block;
+transition: color 0.3s ease;
+}
+
+.all h2:after{
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 100%;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  background-color: #663dff4a;
+  border-radius: 5px;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  transition: all 0.3s ease;
+}
+
+.all h2:hover{
+color: #fff;
+}
+.all h2:hover:after {
+  left: 0;
+  width: 100%;
+}
+
+/*!!!*/
+    .sessions h2{
+/*background: #b621fe;*/
+border: none;
+z-index: 1;
+user-select: none;
+    padding: 5px;
+    background: #c3a7d163;
+position: relative;
+  display: inline-block;
+transition: color 0.3s ease;
+}
+
+.sessions h2:after{
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 100%;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  background-color: #663dff4a;
+  border-radius: 5px;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  transition: all 0.3s ease;
+}
+
+.sessions h2:hover{
+color: #fff;
+}
+.sessions h2:hover:after {
+  left: 0;
+  width: 100%;
+}
+    
+.section a {
+  /*font-size: 17px;
+  font-style: italic;
+  text-shadow: 0 0 #000;
+  color: #000;
+  text-decoration: none;
+  position: relative;
+  */
+  margin-left: 2em;
+  padding: 6px;
+    }
+    
+
+.section a:hover{
+  background-color: rgba(0,0,0,0.2); /* Change text color on hover */
+  border-radius: 10px;
+    }
+    
+
+  </style>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+
+<body>
+	<header>
+	<nav class="nav-bg">
+		<div class="navlogo">
+        <img src="logo.png" alt="Logo">
+      </div>
+      <div class="links">
+        <a href="#">Home</a>
+        <a class="active" href="#">Events</a>
+        <a href="#">Team</a>
+        <a href="#">Contact</a>
+      </div>
+	</nav>
+	</header>
+
+<div class="section" style="
+    justify-items: center;
+    top: -166px;
+    float: left;
+    position: relative;
+    margin-left: -962px;
+    text-align: center;
+    background: linear-gradient(135deg, #5a1410, #4e4376);
+    display: flex;
+    padding: 0.7em;
+    border-radius: 20px;
+    transition: background-color 0.3s, border-radius 0.3s;
+">
+    <a href="#all" style="
+    font-size: 17px;
+    font-style: italic;
+    text-shadow: 0 0 #000;
+    color: #eddfdfe3;
+    text-decoration: none;
+    position: relative;
+    margin-left: 2em;
+">All</a>
+  
+    <a href="#sessions" style="
+    position: relative;
+    font-size: 17px;
+    font-style: italic;
+    text-shadow: 0 0 #000;
+    color: #eddfdfe3;
+    text-decoration: none;
+    margin-left: 12.5em;
+">Sessions</a>
+    <a href="#" style="
+    font-size: 17px;
+    font-style: italic;
+    text-shadow: 0 0 #000;
+    color: #eddfdfe3;
+    text-decoration: none;
+    position: relative;
+    margin-left: 12.5em;
+    margin-right: 40px;
+">Festivals</a>
+  </div>
+
+
+<div id="all" class="all" style="
+    color: white;
+    margin-top: -37px;
+    display: inline-block;
+    width: 126%;
+    margin-left: -1388px;
+    z-index: 1100;
+    text-align: center;
+    justify-items: center;
+">
+<h2 style="margin-inline-start: 791px;"> <span class="hover-effect">All Upcoming Events</span></h2>
+</div>
+<!---->	
+
+
+	
+<div class="app">
+  <div class="cardList">
+    <!-- Left Arrow Button -->
+    <button class="cardList__btn btn btn--left">
+      <div class="icon" style="color: white;">
+        <div class="arrow arrow--left">
+  <i class="fas fa-arrow-left"></i>
+</div>
+<div class="arrow arrow--right">
+  <i class="fas fa-arrow-right"></i>
+</div>
+      </div>  <!--ICON DIV ENDS HERE-->
+    </button>
+
+
+    <div class="cards__wrapper">
+
+           <div class="card current--card">
+        <div class="card__image">
+          <img src="CODESHASTRA2.png" alt="Codeshastra" />
+        </div>
+      </div>
+
+      <div class="card next--card">
+        <div class="card__image">
+          <img src="FLUTTER2.png" alt="flutter" />
+        </div>
+      </div>
+
+      <div class="card previous--card">
+        <div class="card__image">
+          <img src="PIXELS.png" alt="pixelhack" />
+        </div>
+      </div>
+    </div>		<!--CARDS__WRAPPER DIV ENDS HERE-->
+
+  </div>		<!--CARDLIST DIV ENDS HERE-->
+
+
+
+  <div class="infoList">
+    <div class="info__wrapper" style="margin-top: 90px;">
+      <div class="info current--info">
+				<h1 class="text name">Codeshashtra 8.0</h1>
+				<h4 class="text location">March 26-27</h4>
+				<p class="text description">(Hybrid)</p>
+			</div>
+
+			<div class="info next--info">
+				<h1 class="text name">Flutter Fest</h1>
+				<h4 class="text location">March 1</h4>
+				<p class="text description">(Virtual)</p>
+			</div>
+
+			<div class="info previous--info">
+				<h1 class="text name">Pixelhacks</h1>
+				<h4 class="text location">Nov 21</h4>
+				<p class="text description">(Virtual)</p>
+			</div>
+    </div>
+  </div>
+
+ 
+ <div class="app__bg">
+   <!-- <div class="app__bg__image current--image">
+      <img src="CODESHASTRA2.png" alt="" />
+    </div>
+    <div class="app__bg__image next--image">
+      <img src="FLUTTER2.png" alt="" />
+    </div>
+    <div class="app__bg__image previous--image">
+      <img src="PIXELS.png" alt="" />
+    </div>
+-->
+  </div>
+</div>
+
+
+<!---PART 2-->
+  <div id="sessions" class="sessions"><h2><span class="hover-effect">Sessions</span></h2>
+</div>
+
+<div class="app2">
+<div class="cardList">
+    <!-- Left Arrow Button -->
+    <button class="cardList__btn btn btn--left">
+      <div class="icon" style="color: white;">
+        <div class="arrow arrow--left">
+  <i class="fas fa-arrow-left"></i>
+</div>
+<div class="arrow arrow--right">
+  <i class="fas fa-arrow-right"></i>
+</div>
+      </div>  <!--ICON DIV ENDS HERE-->
+    </button>
+
+
+    <div class="cards__wrapper">
+
+           <div class="card current--card">
+        <div class="card__image">
+          <img src="CODESHASTRA2.png" alt="Codeshastra" />
+        </div>
+      </div>
+
+      <div class="card next--card">
+        <div class="card__image">
+          <img src="FLUTTER2.png" alt="flutter" />
+        </div>
+      </div>
+
+      <div class="card previous--card">
+        <div class="card__image">
+          <img src="PIXELS.png" alt="pixelhack" />
+        </div>
+      </div>
+    </div>		<!--CARDS__WRAPPER DIV ENDS HERE-->
+
+  </div>		<!--CARDLIST DIV ENDS HERE-->
+
+
+
+  <div class="infoList">
+    <div class="info__wrapper" style="margin-top: 90px;">
+      <div class="info current--info">
+				<h1 class="text name">Codeshashtra 8.0</h1>
+				<h4 class="text location">March 26-27</h4>
+				<p class="text description">(Hybrid)</p>
+			</div>
+
+			<div class="info next--info">
+				<h1 class="text name">Flutter Fest</h1>
+				<h4 class="text location">March 1</h4>
+				<p class="text description">(Virtual)</p>
+			</div>
+
+			<div class="info previous--info">
+				<h1 class="text name">Pixelhacks</h1>
+				<h4 class="text location">Nov 21</h4>
+				<p class="text description">(Virtual)</p>
+			</div>
+    </div>
+  </div>
+
+  <div class="app__bg">
+  </div>
+</div>
+
+
+
+
+<div class="support">
+  <a href="https://www.instagram.com/gdsc.djsce/" target="_blank"><i class="fab fa-instagram"></i></a>
+
+  <a href="https://www.linkedin.com/company/gdsc-djsce/?originalSubdomain=in" target="_blank"><i class="fab fa-linkedin"></i></a>
+</div>
+
+<script>
+  const cards = [
+    {
+      name: "Codeshashtra 8.0",
+      location: "March 26-27",
+      description: "(Hybrid)",
+      imageSrc: "CODESHASTRA2.png",
+    },
+    {
+      name: "Flutter Fest",
+      location: "March 1",
+      description: "(Virtual)",
+      imageSrc: "FLUTTER2.png",
+    },
+    {
+      name: "Pixelhacks",
+      location: "Nov 21",
+      description: "(Virtual)",
+      imageSrc: "PIXELS.png",
+    },
+  ];
+
+  let currentIndex = 0; // Keep track of the current card index
+  let currentIndex2 = 0;
+
+  const cardImages = document.querySelectorAll(".card__image img");
+  const cardNames = document.querySelectorAll(".info .name");
+  const cardLocations = document.querySelectorAll(".info .location");
+  const cardDescriptions = document.querySelectorAll(".info .description");
+const arrowButtons = document.querySelectorAll(".arrow");
+
+  //const leftArrow = document.querySelector(".arrow--left");
+  //const rightArrow = document.querySelector(".arrow--right");
+
+  // Function to update the card content
+  function updateCard() {
+
+//for current card
+    const card = cards[currentIndex];
+    cardImages[1].src = card.imageSrc;
+    cardNames[1].textContent = card.name;
+    cardLocations[1].textContent = card.location;
+    cardDescriptions[1].textContent = card.description;
+
+    // to update the previous card
+    const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
+    const prevCard = cards[prevIndex];
+    cardImages[0].src = prevCard.imageSrc;
+    cardNames[0].textContent = prevCard.name;
+    cardLocations[0].textContent = prevCard.location;
+    cardDescriptions[0].textContent = prevCard.description;
+
+
+    // update the next card
+    const nextIndex = (currentIndex + 1) % cards.length;
+    const nextCard = cards[nextIndex];
+    cardImages[2].src = nextCard.imageSrc;
+    cardNames[2].textContent = nextCard.name;
+    cardLocations[2].textContent = nextCard.location;
+    cardDescriptions[2].textContent = nextCard.description;
+  }
+
+
+// Function to update the second card content
+
+  function updateCard2() {
+  const card = cards[currentIndex2];
+  // Update card content here for the second set of cards
+cardImages[4].src = card.imageSrc;
+  cardNames[4].textContent = card.name;
+  cardLocations[4].textContent = card.location;
+  cardDescriptions[4].textContent = card.description;
+
+  // Calculate indices for the previous and next cards in the second set
+  
+
+  // Update the previous card in the second set
+const prevIndex2 = (currentIndex2 - 1 + cards.length) % cards.length;
+  const prevCard2 = cards[prevIndex2];
+  cardImages[3].src = prevCard2.imageSrc;
+  cardNames[3].textContent = prevCard2.name;
+  cardLocations[3].textContent = prevCard2.location;
+  cardDescriptions[3].textContent = prevCard2.description;
+
+  // Update the next card in the second set
+const nextIndex2 = (currentIndex2 + 1) % cards.length;
+  const nextCard2 = cards[nextIndex2];
+  cardImages[5].src = nextCard2.imageSrc;
+  cardNames[5].textContent = nextCard2.name;
+  cardLocations[5].textContent = nextCard2.location;
+  cardDescriptions[5].textContent = nextCard2.description;
+}
+
+// Event listeners for the arrow buttons
+arrowButtons.forEach((arrow, index) => {
+  arrow.addEventListener("click", () => {
+    if (index === 0) {
+      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+      updateCard();
+    } else if (index === 1) {
+      currentIndex = (currentIndex + 1) % cards.length;
+      updateCard();
+    } else if (index === 2) {
+      currentIndex2 = (currentIndex2 - 1 + cards.length) % cards.length;
+      updateCard2();
+    } else if (index === 3) {
+      currentIndex2 = (currentIndex2 + 1) % cards.length;
+      updateCard2();
+    }
+  });
+});
+
+
+// to display the first card when page loads
+updateCard();
+updateCard2(); // Call the modified function
+
+//PART 2
+   // Smooth scrolling for navigation links
+  document.addEventListener("DOMContentLoaded", function() {
+    const links = document.querySelectorAll("nav a");
+
+    links.forEach(link => {
+      link.addEventListener("click", function(event) {
+        event.preventDefault();
+        const targetId = link.getAttribute("href");
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
+
+  });
+  
+</script>
+
+</body>
+</html>
+
